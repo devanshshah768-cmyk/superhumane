@@ -101,23 +101,23 @@ function Home() {
                 {/* BUTTONS */}
                 <div className="flex flex-wrap gap-5 mt-12">
 
-                  <button className="px-8 py-4 rounded-2xl bg-primary text-white font-semibold shadow-2xl hover:scale-105 transition duration-300">
+
+
+                  <button className="px-8 py-4 rounded-2xl bg-primary text-white font-semibold shadow-2xl hover:scale-105 transition duration-300" onClick={() => navigate('/register')}>
 
                     Get Started
 
                   </button>
 
-                  <button className="px-8 py-4 rounded-2xl border border-white/30 text-white backdrop-blur-md hover:bg-white hover:text-secondary transition duration-300">
-
+                  <button className="px-8 py-4 rounded-2xl border border-white/30 text-white backdrop-blur-md hover:bg-white hover:text-secondary transition duration-300" onClick={() => navigate('/login')}>
                     Learn More
-
                   </button>
 
                 </div>
 
               </motion.div>
 
-              {/* RIGHT GLASS CARD */}
+              {/* RIGHT GLASS CARD */}                  
               <motion.div
                 initial={{ opacity: 0, x: 50 }}
                 animate={{ opacity: 1, x: 0 }}
@@ -477,7 +477,9 @@ function Home() {
                     transition
                     duration-300
                   "
-                >
+
+
+onClick={()=>navigate('/dev')}>
 
                   Learn More
 
