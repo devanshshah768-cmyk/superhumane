@@ -1,4 +1,4 @@
-import { Navigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 
 import { motion } from "framer-motion";
 
@@ -7,7 +7,7 @@ import { useAuth } from "../context/AuthContext";
 import MainLayout from "../layouts/MainLayout";
 
 function Home() {
-
+  const navigate = useNavigate();
   const {
     user,
     loading,
@@ -103,15 +103,19 @@ function Home() {
 
 
 
-                  <button className="px-8 py-4 rounded-2xl bg-primary text-white font-semibold shadow-2xl hover:scale-105 transition duration-300" onClick={() => navigate('/register')}>
+                  <button
+                  className="px-8 py-4 rounded-2xl bg-primary text-white font-semibold shadow-2xl hover:scale-105 transition duration-300"
+                  onClick={() => navigate('/register')}
+                >
+                  Get Started
+                </button>
 
-                    Get Started
-
-                  </button>
-
-                  <button className="px-8 py-4 rounded-2xl border border-white/30 text-white backdrop-blur-md hover:bg-white hover:text-secondary transition duration-300" onClick={() => navigate('/login')}>
-                    Learn More
-                  </button>
+                <button
+                  className="px-8 py-4 rounded-2xl border border-white/30 text-white backdrop-blur-md hover:bg-white hover:text-secondary transition duration-300"
+                  onClick={() => navigate('/login')}
+                >
+                  Learn More
+                </button>
 
                 </div>
 
@@ -306,11 +310,10 @@ function Home() {
 
                 <button
                   className="
-                    mt-10
-                    px-10
+                    px-8
                     py-4
                     rounded-2xl
-                    bg-primary
+                    bg-accent
                     text-white
                     font-semibold
                     shadow-xl
@@ -319,10 +322,9 @@ function Home() {
                     transition
                     duration-300
                   "
+                  onClick={() => navigate('/aboutdr')}
                 >
-
                   Learn More
-
                 </button>
 
               </div>
@@ -477,12 +479,9 @@ function Home() {
                     transition
                     duration-300
                   "
-
-
-onClick={()=>navigate('/dev')}>
-
+                  onClick={() => navigate('/dev')}
+                >
                   Learn More
-
                 </button>
 
               </motion.div>

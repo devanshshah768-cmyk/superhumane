@@ -3,6 +3,7 @@ import {
   useNavigate,
 } from "react-router-dom";
 
+import { useState } from "react";
 import {
   signOut,
 } from "firebase/auth";
@@ -19,7 +20,7 @@ function Navbar() {
 
   const navigate =
     useNavigate();
-
+  const [mobileOpen, setMobileOpen] = useState(false);
   async function handleLogout() {
 
     try {
@@ -207,7 +208,10 @@ function Navbar() {
         </div>
 
         {/* MOBILE MENU BUTTON */}
-        <button className="md:hidden flex items-center justify-center w-12 h-12 rounded-xl bg-gray-100">
+        <button
+          onClick={() => setMobileOpen(!mobileOpen)}
+          className="md:hidden flex items-center justify-center w-12 h-12 rounded-xl bg-gray-100"
+        >
 
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -229,7 +233,98 @@ function Navbar() {
         </button>
 
       </nav>
+      {mobileOpen && (
 
+  <div className="md:hidden bg-white border-t border-gray-200">
+
+    <div className="px-6 py-4 flex flex-col gap-4">
+
+      <Link
+        to="/"
+        onClick={() => setMobileOpen(false)}
+        className="font-medium text-gray-700 text-center"
+      >
+        Home
+      </Link>
+
+      <Link
+        to="/growth"
+        onClick={() => setMobileOpen(false)}
+        className="font-medium text-gray-700 text-center"
+      >
+        Growth Charts
+      </Link>
+
+      <Link
+        to="/milestones"
+        onClick={() => setMobileOpen(false)}
+        className="font-medium text-gray-700 text-center"
+      >
+        Milestones
+      </Link>
+
+      <Link
+        to="/features"
+        onClick={() => setMobileOpen(false)}
+        className="font-medium text-gray-700 text-center"
+      >
+        Features
+      </Link>
+
+      <Link
+        to="/about"
+        onClick={() => setMobileOpen(false)}
+        className="font-medium text-gray-700 text-center"
+      >
+        About
+      </Link>
+
+      {user ? (
+
+        <>
+          <Link
+            to="/add-child"
+            onClick={() => setMobileOpen(false)}
+            className="bg-primary text-white px-4 py-3 rounded-xl text-center"
+          >
+            Add Child
+          </Link>
+
+          <button
+            onClick={handleLogout}
+            className="bg-red-500 text-white px-4 py-3 rounded-xl text-center"
+          >
+            Logout
+          </button>
+        </>
+
+      ) : (
+
+        <>
+          <Link
+            to="/login"
+            onClick={() => setMobileOpen(false)}
+            className="text-center border rounded-xl px-4 py-3"
+          >
+            Login
+          </Link>
+
+          <Link
+            to="/register"
+            onClick={() => setMobileOpen(false)}
+            className="bg-primary text-white px-4 py-3 rounded-xl text-center"
+          >
+            Register
+          </Link>
+        </>
+
+      )}
+
+    </div>
+
+  </div>
+
+)}
     </header>
 
   );
