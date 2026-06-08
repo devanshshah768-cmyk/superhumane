@@ -5,17 +5,7 @@ import { getChild } from "../services/childService";
 import { getGrowthEntries } from "../services/growthService";
 import GrowthForm from "../components/GrowthForm";
 import GrowthTable from "../components/GrowthTable";
-
-import {
-  ResponsiveContainer,
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-} from "recharts";
+import GrowthPercentileChart from "../components/GrowthPercentileChart";
 
 import boysWeight from "../data/growth/boysWeight.json";
 import girlsWeight from "../data/growth/girlsWeight.json";
@@ -97,129 +87,71 @@ function GrowthCharts() {
       ? boysBMI
       : girlsBMI;
 
-  const patientData = useMemo(() => {
-    if (!child) return [];
+const childChartData = useMemo(() => {
+  if (!child) return [];
 
-    return records.map((record) => ({
-      age: getAgeYears(
+  return records.map((record) => ({
+    ageMonths:
+      getAgeYears(
         child.dob,
         record.measurementDate
-      ),
-      weight: Number(record.weight || 0),
-      height: Number(record.height || 0),
-      bmi: Number(record.bmi || 0),
-    }));
-  }, [records, child]);
-const weightPatientData = patientData.map((p) => ({
-  age: p.age,
-  value: p.weight,
+      ) * 12,
+
+    weight: Number(record.weight || 0),
+    height: Number(record.height || 0),
+    bmi: Number(record.bmi || 0),
+  }));
+}, [records, child]);
+
+const weightCurveData = weightPercentiles.map((p) => ({
+  ...p,
+  ageMonths: p.ageYears * 12,
 }));
 
-const heightPatientData = patientData.map((p) => ({
-  age: p.age,
-  value: p.height,
-}));
+const heightCurveData =
+  heightPercentiles.map((p) => ({
+    ageMonths: p.ageYears * 12,
+    ...p,
+  }));
 
-const bmiPatientData = patientData.map((p) => ({
-  age: p.age,
-  value: p.bmi,
-}));
-function buildChartData(percentiles, patientData, key) {
-  return percentiles.map((p) => {
-    const patientPoint = patientData.find(
-      (r) => Math.abs(r.age - p.ageYears) < 0.25
-    );
+const bmiCurveData =
+  bmiPercentiles.map((p) => ({
+    ageMonths: p.ageYears * 12,
+    ...p,
+  }));
 
-    return {
-      age: p.ageYears,
-      p3: p.p3,
-      p10: p.p10,
-      p25: p.p25,
-      p50: p.p50,
-      p75: p.p75,
-      p90: p.p90,
-      p97: p.p97,
-      patient: patientPoint ? patientPoint[key] : null,
-    };
-  });
-}
-
-const weightData = buildChartData(
-  weightPercentiles,
-  patientData,
-  "weight"
-);
-
-const heightData = buildChartData(
-  heightPercentiles,
-  patientData,
-  "height"
-);
-
-const bmiData = buildChartData(
-  bmiPercentiles,
-  patientData,
-  "bmi"
-);
-
-  const chartConfig = {
+const chartConfig = {
   weight: {
     title: "Weight For Age Percentiles",
-    data: weightData,
-    patientLabel: "Weight (kg)",
+    curveData: weightCurveData,
+    dataKey: "weight",
+    unit: "Weight (kg)",
   },
 
   height: {
     title: "Height For Age Percentiles",
-    data: heightData,
-    patientLabel: "Height (cm)",
+    curveData: heightCurveData,
+    dataKey: "height",
+    unit: "Height (cm)",
   },
 
   bmi: {
     title: "BMI For Age Percentiles",
-    data: bmiData,
-    patientLabel: "BMI",
+    curveData: bmiCurveData,
+    dataKey: "bmi",
+    unit: "BMI",
   },
 };
 
-  const activeChart = chartConfig[selectedChart];
-  function PercentileChart({ title, data, patientLabel }) {
-    return (
-      <div>
+const activeChart = chartConfig[selectedChart];
 
-        <div className="h-[450px]">
-          <ResponsiveContainer width="100%" height="100%">
-            <LineChart data={data}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="age" />
-              <YAxis />
-              <Tooltip />
-              <Legend />
-
-              <Line data={data} dataKey="p3" stroke="#ef4444" dot={false} />
-              <Line data={data} dataKey="p10" stroke="#f97316" dot={false} />
-              <Line data={data} dataKey="p25" stroke="#eab308" dot={false} />
-              <Line data={data} dataKey="p50" stroke="#22c55e" strokeWidth={3} dot={false} />
-              <Line data={data} dataKey="p75" stroke="#3b82f6" dot={false} />
-              <Line data={data} dataKey="p90" stroke="#8b5cf6" dot={false} />
-              <Line data={data} dataKey="p97" stroke="#ec4899" dot={false} />
-
-<Line
-  dataKey="value"
-  data={activeChart.patientData}
-  name={activeChart.patientLabel}
-  stroke="#111827"
-  strokeWidth={5}
-  dot={{ r: 7 }}
-  activeDot={{ r: 9 }}
-  connectNulls
+<GrowthPercentileChart
+  title={activeChart.title}
+  curveData={activeChart.curveData}
+  childData={childChartData}
+  dataKey={activeChart.dataKey}
+  unit={activeChart.unit}
 />
-            </LineChart>
-          </ResponsiveContainer>
-        </div>
-      </div>
-    );
-  }
 
   if (loading) {
     return <MainLayout><div className="p-10">Loading...</div></MainLayout>;
@@ -293,11 +225,13 @@ const bmiData = buildChartData(
     </div>
   </div>
 
-  <PercentileChart
-    title={activeChart.title}
-    data={activeChart.data}
-    patientLabel={activeChart.patientLabel}
-  />
+<GrowthPercentileChart
+  title={activeChart.title}
+  curveData={activeChart.curveData}
+  childData={childChartData}
+  dataKey={activeChart.dataKey}
+  unit={activeChart.unit}
+/>
 
 </div>
             </div>

@@ -19,38 +19,36 @@ function GrowthPercentileChart({
 
 }) {
 
-  const chartData =
-    curveData.map(
-      (curvePoint) => {
+const percentileData = curveData.map((p) => ({
+  ageMonths: p.ageMonths,
+  p3: p.p3,
+  p10: p.p10,
+  p25: p.p25,
+  p50: p.p50,
+  p75: p.p75,
+  p90: p.p90,
+  p97: p.p97,
+}));
 
-        const childPoint =
-          childData.find(
+const sortedPercentileData = [...percentileData].sort(
+  (a, b) => a.ageMonths - b.ageMonths
+);
 
-            (item) =>
+const CustomTooltip = ({ active, payload }) => {
+  if (!active || !payload || !payload.length) return null;
 
-              Math.round(
-                item.ageMonths
-              ) ===
+  return (
+    <div className="bg-white border rounded-xl shadow-lg p-3">
+      {payload.map((entry, index) => (
+        <div key={index}>
+          <strong>{entry.name}</strong>:{" "}
+          {Number(entry.value).toFixed(2)}
+        </div>
+      ))}
+    </div>
+  );
+};
 
-              Math.round(
-                curvePoint.ageMonths
-              )
-
-          );
-
-        return {
-
-          ...curvePoint,
-
-          child:
-            childPoint?.[
-              dataKey
-            ] || null,
-
-        };
-
-      }
-    );
 
   return (
 
@@ -86,115 +84,58 @@ function GrowthPercentileChart({
           width="100%"
           height="100%"
         >
-
-          <LineChart
-            data={chartData}
-          >
-
-            <CartesianGrid
-              strokeDasharray="3 3"
-            />
-
+          <LineChart 
+          data={sortedPercentileData}>
+            
+            <CartesianGrid strokeDasharray="3 3" />
             <XAxis
-              dataKey="ageMonths"
-              label={{
-                value:
-                  "Age (Months)",
-                position:
-                  "insideBottom",
-                offset:
-                  -5,
-              }}
-            />
+  dataKey="ageMonths"
+  type="number"
+  scale="linear"
+  domain={[0, 216]}
+  tickCount={19}
+/>
 
-            <YAxis
-              label={{
-                value:
-                  unit,
-                angle:
-                  -90,
-                position:
-                  "insideLeft",
-              }}
-            />
+<Tooltip
+  content={<CustomTooltip/>} 
+  labelFormatter={(label) => {
+    console.log("TOOLTIP LABEL:", label);
+    return `Age: ${label}`;
+  }}
+/>
+  <Legend />
+<Line
+  type="monotone"
+  dataKey="p50"
+  stroke="green"
+  dot={{ r: 8 }}
+/>
+<Line type="monotone" dataKey="p3"  stroke="#EF4444" strokeWidth={2} dot={false} name="3rd Percentile" />
+<Line type="monotone" dataKey="p10" stroke="#F97316" strokeWidth={2} dot={false} name="10th Percentile" />
+<Line type="monotone" dataKey="p25" stroke="#EAB308" strokeWidth={2} dot={false} name="25th Percentile" />
+<Line type="monotone" dataKey="p50" stroke="#22C55E" strokeWidth={4} dot={false} name="50th Percentile" />
+<Line type="monotone" dataKey="p75" stroke="#3B82F6" strokeWidth={2} dot={false} name="75th Percentile" />
+<Line type="monotone" dataKey="p90" stroke="#8B5CF6" strokeWidth={2} dot={false} name="90th Percentile" />
+<Line type="monotone" dataKey="p97" stroke="#EC4899" strokeWidth={2} dot={false} name="97th Percentile" />
 
-            <Tooltip />
+<Line
+  data={childData}
+  dataKey={dataKey}
+  stroke="#111827"
+  strokeWidth={6}
+  dot={{
+    r: 8,
+    strokeWidth: 3,
+    fill: "#ffffff",
+  }}
+  activeDot={{
+    r: 10,
+  }}
+  connectNulls
+  name="Patient"
+/>
 
-            <Legend />
-
-            {/* PERCENTILES */}
-
-            <Line
-              type="monotone"
-              dataKey="p3"
-              stroke="#D1D5DB"
-              dot={false}
-              name="P3"
-            />
-
-            <Line
-              type="monotone"
-              dataKey="p10"
-              stroke="#CBD5E1"
-              dot={false}
-              name="P10"
-            />
-
-            <Line
-              type="monotone"
-              dataKey="p25"
-              stroke="#94A3B8"
-              dot={false}
-              name="P25"
-            />
-
-            <Line
-              type="monotone"
-              dataKey="p50"
-              stroke="#2563EB"
-              strokeWidth={3}
-              dot={false}
-              name="P50"
-            />
-
-            <Line
-              type="monotone"
-              dataKey="p75"
-              stroke="#94A3B8"
-              dot={false}
-              name="P75"
-            />
-
-            <Line
-              type="monotone"
-              dataKey="p90"
-              stroke="#CBD5E1"
-              dot={false}
-              name="P90"
-            />
-
-            <Line
-              type="monotone"
-              dataKey="p97"
-              stroke="#D1D5DB"
-              dot={false}
-              name="P97"
-            />
-
-            {/* CHILD */}
-
-            <Line
-              type="monotone"
-              dataKey="child"
-              stroke="#EF4444"
-              strokeWidth={4}
-              activeDot={{
-                r: 8,
-              }}
-              name="Child"
-            />
-
-          </LineChart>
+</LineChart>
 
         </ResponsiveContainer>
 
