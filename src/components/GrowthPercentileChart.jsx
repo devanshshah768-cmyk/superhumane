@@ -84,57 +84,41 @@ const CustomTooltip = ({ active, payload }) => {
           width="100%"
           height="100%"
         >
-          <LineChart 
-          data={sortedPercentileData}>
-            
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis
-  dataKey="ageMonths"
-  type="number"
-  scale="linear"
-  domain={[0, 216]}
-  tickCount={19}
-/>
+          <LineChart data={sortedPercentileData}>
+  <CartesianGrid strokeDasharray="3 3" />
 
-<Tooltip
-  content={<CustomTooltip/>} 
-  labelFormatter={(label) => {
-    console.log("TOOLTIP LABEL:", label);
-    return `Age: ${label}`;
-  }}
-/>
+  <XAxis
+    dataKey="ageMonths"
+    type="number"
+    scale="linear"
+    domain={[0, 216]}
+    tickFormatter={(value) => value / 12}
+  />
+
+  <YAxis />
+
   <Legend />
-<Line
-  type="monotone"
-  dataKey="p50"
-  stroke="green"
-  dot={{ r: 8 }}
-/>
-<Line type="monotone" dataKey="p3"  stroke="#EF4444" strokeWidth={2} dot={false} name="3rd Percentile" />
-<Line type="monotone" dataKey="p10" stroke="#F97316" strokeWidth={2} dot={false} name="10th Percentile" />
-<Line type="monotone" dataKey="p25" stroke="#EAB308" strokeWidth={2} dot={false} name="25th Percentile" />
-<Line type="monotone" dataKey="p50" stroke="#22C55E" strokeWidth={4} dot={false} name="50th Percentile" />
-<Line type="monotone" dataKey="p75" stroke="#3B82F6" strokeWidth={2} dot={false} name="75th Percentile" />
-<Line type="monotone" dataKey="p90" stroke="#8B5CF6" strokeWidth={2} dot={false} name="90th Percentile" />
-<Line type="monotone" dataKey="p97" stroke="#EC4899" strokeWidth={2} dot={false} name="97th Percentile" />
 
-<Line
-  data={childData}
-  dataKey={dataKey}
-  stroke="#111827"
-  strokeWidth={6}
-  dot={{
-    r: 8,
-    strokeWidth: 3,
-    fill: "#ffffff",
-  }}
-  activeDot={{
-    r: 10,
-  }}
-  connectNulls
-  name="Patient"
-/>
+  <Line type="monotone" dataKey="p3" stroke="#EF4444" strokeWidth={2} dot={false} />
+  <Line type="monotone" dataKey="p10" stroke="#F97316" strokeWidth={2} dot={false} />
+  <Line type="monotone" dataKey="p25" stroke="#EAB308" strokeWidth={2} dot={false} />
+  <Line type="monotone" dataKey="p50" stroke="#22C55E" strokeWidth={4} dot={false} />
+  <Line type="monotone" dataKey="p75" stroke="#3B82F6" strokeWidth={2} dot={false} />
+  <Line type="monotone" dataKey="p90" stroke="#8B5CF6" strokeWidth={2} dot={false} />
+  <Line type="monotone" dataKey="p97" stroke="#EC4899" strokeWidth={2} dot={false} />
 
+  <Line
+    data={childData}
+    dataKey={dataKey}
+    stroke="#111827"
+    strokeWidth={6}
+    dot={{
+      r: 7,
+      fill: "#111827",
+    }}
+    connectNulls
+    name="Patient"
+  />
 </LineChart>
 
         </ResponsiveContainer>
