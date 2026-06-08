@@ -47,7 +47,7 @@ function AppRoutes() {
         />
 
         <Route
-          path="/growth"
+          path="/growth/:childId"
           element={<GrowthCharts />}
         />
 
@@ -96,7 +96,7 @@ function AppRoutes() {
           path="*"
           element={
             <div className="min-h-screen flex items-center justify-center text-5xl font-bold">
-              404 Not Found 😭
+              404 Not Found 
             </div>
           }
         />

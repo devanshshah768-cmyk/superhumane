@@ -412,7 +412,7 @@ function ChildCard({
             <button
               onClick={() =>
                 navigate(
-                  `/child/${child.id}`
+                  `/growth/${child.id}`
                 )
               }
               className="
@@ -427,9 +427,7 @@ function ChildCard({
                 shadow-lg
               "
             >
-
               Track Growth
-
             </button>
 
             {/* EDIT */}

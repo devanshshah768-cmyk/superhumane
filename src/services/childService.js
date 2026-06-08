@@ -5,6 +5,10 @@ import {
   where,
   onSnapshot,
   addDoc,
+  doc,
+  getDoc,
+  updateDoc,
+  deleteDoc,
 
 } from "firebase/firestore";
 
@@ -86,6 +90,78 @@ export function subscribeToChildren(
       );
 
     }
+
+  );
+
+}
+
+/* GET SINGLE CHILD */
+export async function getChild(
+  childId
+) {
+
+  const snapshot =
+    await getDoc(
+
+      doc(
+        db,
+        "children",
+        childId
+      )
+
+    );
+
+  if (
+    !snapshot.exists()
+  ) {
+
+    return null;
+
+  }
+
+  return {
+
+    id:
+      snapshot.id,
+
+    ...snapshot.data(),
+
+  };
+
+}
+
+/* UPDATE CHILD */
+export async function updateChild(
+  childId,
+  updatedData
+) {
+
+  await updateDoc(
+
+    doc(
+      db,
+      "children",
+      childId
+    ),
+
+    updatedData
+
+  );
+
+}
+
+/* DELETE CHILD */
+export async function deleteChild(
+  childId
+) {
+
+  await deleteDoc(
+
+    doc(
+      db,
+      "children",
+      childId
+    )
 
   );
 
