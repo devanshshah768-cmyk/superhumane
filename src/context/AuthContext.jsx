@@ -66,6 +66,12 @@ export function AuthProvider({
 
   }, []);
 
+  async function refreshUserData() {
+    if (!user) return;
+    const data = await getUserData(user.uid);
+    setUserData(data);
+  }
+
   return (
 
     <AuthContext.Provider
@@ -73,6 +79,7 @@ export function AuthProvider({
         user,
         userData,
         loading,
+        refreshUserData,
       }}
     >
 
@@ -81,7 +88,6 @@ export function AuthProvider({
     </AuthContext.Provider>
 
   );
-
 }
 
 export function useAuth() {

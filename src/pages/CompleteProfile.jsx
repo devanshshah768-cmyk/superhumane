@@ -14,7 +14,7 @@ function CompleteProfile() {
 
   const navigate = useNavigate();
 
-  const { user } = useAuth();
+  const { user, refreshUserData } = useAuth();
 
   const [loading, setLoading] = useState(false);
 
@@ -43,6 +43,15 @@ function CompleteProfile() {
         role: formData.role,
 
       });
+
+
+      await completeProfile({
+        uid: user.uid,
+        phone: formData.phone,
+        role: formData.role,
+      });
+
+      await refreshUserData();
 
       alert(
         "Profile completed successfully ✅"
