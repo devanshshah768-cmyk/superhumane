@@ -1,0 +1,15 @@
+{
+  "projects": {
+    "default": "pedimilestones-2"
+  },
+  "targets": {
+    "pedimilestones-2": {
+      "hosting": {
+        "app": [
+          "pedimilestones-2"
+        ]
+      }
+    }
+  },
+  "etags": {}
+}
