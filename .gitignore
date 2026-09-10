@@ -15,6 +15,9 @@ deployer.bat
 .env
 .env.*
 !.env.example
+tools-migrate
+pm1.json
+pm2.json
 
 # Firebase
 .firebase/
