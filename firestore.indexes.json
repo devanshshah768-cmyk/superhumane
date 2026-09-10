@@ -1,42 +1,12 @@
 {
   "indexes": [
     {
-      "collectionGroup": "growthData",
+      "collectionGroup": "milestones",
       "queryScope": "COLLECTION",
       "fields": [
-        {
-          "fieldPath": "childId",
-          "order": "ASCENDING"
-        },
-        {
-          "fieldPath": "ageInMonths",
-          "order": "ASCENDING"
-        },
-        {
-          "fieldPath": "__name__",
-          "order": "ASCENDING"
-        }
-      ],
-      "density": "SPARSE_ALL"
-    },
-    {
-      "collectionGroup": "growthData",
-      "queryScope": "COLLECTION",
-      "fields": [
-        {
-          "fieldPath": "childId",
-          "order": "ASCENDING"
-        },
-        {
-          "fieldPath": "measurementDate",
-          "order": "ASCENDING"
-        },
-        {
-          "fieldPath": "__name__",
-          "order": "ASCENDING"
-        }
-      ],
-      "density": "SPARSE_ALL"
+        { "fieldPath": "childId", "order": "ASCENDING" },
+        { "fieldPath": "expectedAge", "order": "ASCENDING" }
+      ]
     }
   ],
   "fieldOverrides": []
